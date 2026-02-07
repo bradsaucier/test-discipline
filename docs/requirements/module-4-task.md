@@ -16,9 +16,13 @@
 | S2 | delete | delete tasks by taskId |
 | S3 | update | update name, description by taskId |
 
+Test-support helpers (not rubric requirements)
+- H1: getTask(taskId) returns stored Task or null if not present
+- H2: getTaskCount() returns current in-memory count
+
 ## Trace to tests
 
-| Requirement | Test coverage (examples) |
+| Requirement | Test coverage |
 |---|---|
 | R1 | TaskTest.taskIdNullThrows, TaskTest.taskIdTooLongThrows, TaskTest.taskIdLengthTenAccepted |
 | R2 | TaskTest.nameNullThrows, TaskTest.nameTooLongThrows, TaskTest.nameLengthTwentyAccepted |
@@ -26,3 +30,4 @@
 | S1 | TaskServiceTest.addTaskStoresTask, TaskServiceTest.addNullTaskThrows, TaskServiceTest.addTaskDuplicateIdThrows |
 | S2 | TaskServiceTest.deleteTaskRemovesTask, TaskServiceTest.deleteUnknownIdThrows, TaskServiceTest.deleteNullIdThrows |
 | S3 | TaskServiceTest.updateTaskUpdatesFields, TaskServiceTest.updateTaskPartialUpdateKeepsOtherFields, TaskServiceTest.updateTaskPartialUpdateDescriptionOnly, TaskServiceTest.updateTaskNoOpWhenBothNull, TaskServiceTest.updateUnknownIdThrows, TaskServiceTest.updateNullIdThrows, TaskServiceTest.invalidFieldValueThrows |
+| H1 | TaskServiceTest.getTaskReturnsNullForUnknownId |
