@@ -1,4 +1,4 @@
-name: Build Test Coverage
+name: Test Discipline
 
 on:
   workflow_dispatch:
