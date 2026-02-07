@@ -2,7 +2,7 @@
 
 Objective: Early verification, disciplined unit testing, and a clean portfolio-grade audit trail.
 
-[![Build Test Coverage](https://github.com/bradsaucier/test-discipline/actions/workflows/maven-build.yml/badge.svg?branch=master)](https://github.com/bradsaucier/test-discipline/actions/workflows/maven-build.yml/badge.svg?branch=master) ![Coverage](.github/badges/jacoco.svg) ![Branches](.github/badges/branches.svg)
+[![Build Test Coverage](https://github.com/bradsaucier/test-discipline/actions/workflows/maven-build.yml/badge.svg?branch=main)](https://github.com/bradsaucier/test-discipline/actions/workflows/maven-build.yml/badge.svg?branch=master) ![Coverage](.github/badges/jacoco.svg) ![Branches](.github/badges/branches.svg)
 
 Note: Coverage and Branches badges update only after a successful run on master generates `target/site/jacoco/jacoco.csv` and commits `.github/badges`.
 
