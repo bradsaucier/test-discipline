@@ -2,6 +2,7 @@
 
 Objective: verification-first unit testing, fail-fast validation, and a clean audit trail through Module 5.
 
+[![Build Test Coverage](https://github.com/bradsaucier/test-discipline/actions/workflows/maven-build.yml/badge.svg)](https://github.com/bradsaucier/test-discipline/actions/workflows/maven-build.yml)
 ![JaCoCo Coverage](.github/badges/jacoco.svg)
 ![Branches](.github/badges/branches.svg)
 
