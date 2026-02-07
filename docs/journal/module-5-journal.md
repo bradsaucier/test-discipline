@@ -1,0 +1,26 @@
+# Verification-First Testing Techniques Across Contact, Task, and Appointment Services
+
+Bradley D. Saucier  
+CS 320 - Software Testing, Automation, and Quality Assurance  
+Professor Wilson  
+February 7, 2026
+
+## Module 5 Journal
+
+I executed the Module Three, Four, and Five milestones using a verification-first approach. The objective was to prove that the Contact, Task, and Appointment components enforce constraints and reject invalid inputs immediately. Across all three milestones, I relied on unit testing with JUnit, requirements-based test design with a black-box mindset, boundary value analysis, negative testing, and fail-fast validation. These techniques matched the milestone scope because the services used in-memory storage and had no external dependencies.
+
+Unit testing served as the baseline technique. This included tests for both the domain objects and their corresponding services. At the object level, tests verified constructor validation for required fields and constraint enforcement so an object cannot be created in an invalid state. This reflects fail-fast validation, where invalid input triggers an exception immediately rather than allowing a partially valid object to exist. At the service level, tests verified lifecycle behavior, including uniqueness enforcement for IDs and correct deletion by ID. This keeps feedback fast because a failing test points directly to a specific class or method.
+
+Requirements-based test design guided how test cases were selected and named. For Contact, Task, and Appointment, each test case was derived directly from a stated rubric constraint such as non-null fields, maximum lengths, uniqueness rules, and controlled exception behavior. This is a black-box approach in the sense that tests focus on inputs and observable outcomes rather than internal implementation details.
+
+Boundary value analysis was applied because the requirements define strict input limits and defects commonly occur at the edges. Tests emphasized the exact maximum as valid and the maximum plus one as invalid to confirm correct less-than-or-equal logic. Boundary tests targeted specific limits for all three services, such as string lengths for names and descriptions, strict phone number formats in Contact, and date validation in Appointment. This approach provided coverage of high-risk constraints without requiring exhaustive combinations.
+
+Negative testing confirmed defensive behavior under invalid inputs. Null inputs, overlength strings, duplicate IDs, and attempts to delete missing IDs were treated as invalid inputs that must be rejected deterministically. In ContactService and TaskService, negative tests also validated that update operations reject invalid changes and that identity fields remain stable when other fields are updated. TaskService was the only service requiring full update coverage across all mutable fields. In Appointment, negative tests addressed the temporal rule and ensured that past dates cannot enter the system.
+
+Module Five introduced a time-based validation detail that required careful test design. The Appointment requirement uses java.util.Date and mandates rejecting past dates using before(new Date()). Time-based logic can create flakiness if tests depend on the exact current instant. To ensure repeatability, I used fixed reference dates: a future date for valid appointments and a past date to verify rejection logic. This preserved repeatability across different machines and runs.
+
+Several techniques were not used because they did not match the current architecture and deliverables. Integration testing validates interactions across component boundaries such as databases or external APIs, and those dependencies were not present. System testing validates an entire deployed application through end-to-end workflows, but there was no complete application or user interface to exercise. Acceptance testing validates stakeholder needs through user stories and acceptance criteria; in these milestones, the rubric requirements served as the specification, so the work focused on verification rather than validation.
+
+I also did not apply performance testing, exploratory testing, or static analysis as part of the milestone deliverables. Performance testing measures responsiveness and resource use under expected and stress conditions, which becomes relevant when systems operate at scale. Exploratory testing is useful when requirements are incomplete or behavior is uncertain, but these milestones were driven by explicit constraints. Static analysis can identify certain defect classes early, but the milestones were centered on functional correctness of in-memory logic.
+
+The practical uses and implications of these techniques depend on project context. For small, focused services, unit testing provides fast, repeatable feedback and isolates defects to a small code region. Boundary value analysis increases confidence efficiently by concentrating effort where strict constraints create high risk of off-by-one errors. Negative testing prevents invalid state from reaching later phases where defects are harder to isolate. For these services, early unit verification using boundary and negative testing established a stable component baseline, reducing risk prior to broader system integration.
