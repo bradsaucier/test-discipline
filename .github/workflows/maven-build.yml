@@ -3,7 +3,7 @@ name: Build Test Coverage
 on:
   workflow_dispatch:
   push:
-    branches: ["master", "develop"]
+    branches: ["main", "develop"]
     paths-ignore:
       - "**/*.md"
       - "docs/**"
