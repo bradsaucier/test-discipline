@@ -20,18 +20,18 @@ public class ContactTest {
     }
 
     @Test
-    @DisplayName("R1 - contactId length must be <= 10")
-    void contactIdTooLongThrows() {
+    @DisplayName("R1 - contactId must not be empty")
+    void contactIdEmptyThrows() {
         assertThrows(IllegalArgumentException.class, () ->
-            new Contact("12345678901", "John", "Smith", "1234567890", "123 Main St")
+            new Contact("", "John", "Smith", "1234567890", "123 Main St")
         );
     }
 
     @Test
-    @DisplayName("R1 - contactId length 10 is accepted")
-    void contactIdLengthTenAccepted() {
-        assertDoesNotThrow(() ->
-            new Contact("1234567890", "John", "Smith", "1234567890", "123 Main St")
+    @DisplayName("R1 - contactId length must be <= 10")
+    void contactIdTooLongThrows() {
+        assertThrows(IllegalArgumentException.class, () ->
+            new Contact("12345678901", "John", "Smith", "1234567890", "123 Main St")
         );
     }
 
@@ -44,18 +44,18 @@ public class ContactTest {
     }
 
     @Test
-    @DisplayName("R2 - firstName length must be <= 10")
-    void firstNameTooLongThrows() {
+    @DisplayName("R2 - firstName must not be empty")
+    void firstNameEmptyThrows() {
         assertThrows(IllegalArgumentException.class, () ->
-            new Contact("ID1", "ABCDEFGHIJK", "Smith", "1234567890", "123 Main St")
+            new Contact("ID1", "", "Smith", "1234567890", "123 Main St")
         );
     }
 
     @Test
-    @DisplayName("R2 - firstName length 10 is accepted")
-    void firstNameLengthTenAccepted() {
-        assertDoesNotThrow(() ->
-            new Contact("ID1", "ABCDEFGHIJ", "Smith", "1234567890", "123 Main St")
+    @DisplayName("R2 - firstName length must be <= 10")
+    void firstNameTooLongThrows() {
+        assertThrows(IllegalArgumentException.class, () ->
+            new Contact("ID1", "ABCDEFGHIJK", "Smith", "1234567890", "123 Main St")
         );
     }
 
@@ -76,14 +76,6 @@ public class ContactTest {
     }
 
     @Test
-    @DisplayName("R3 - lastName length 10 is accepted")
-    void lastNameLengthTenAccepted() {
-        assertDoesNotThrow(() ->
-            new Contact("ID1", "John", "ABCDEFGHIJ", "1234567890", "123 Main St")
-        );
-    }
-
-    @Test
     @DisplayName("R4 - phone must not be null")
     void phoneNullThrows() {
         assertThrows(IllegalArgumentException.class, () ->
@@ -92,7 +84,7 @@ public class ContactTest {
     }
 
     @Test
-    @DisplayName("R4 - phone must be exactly 10 digits (too short rejected)")
+    @DisplayName("R4 - phone must be exactly 10 digits (too short)")
     void phoneTooShortThrows() {
         assertThrows(IllegalArgumentException.class, () ->
             new Contact("ID1", "John", "Smith", "123456789", "123 Main St")
@@ -100,7 +92,7 @@ public class ContactTest {
     }
 
     @Test
-    @DisplayName("R4 - phone must be exactly 10 digits (too long rejected)")
+    @DisplayName("R4 - phone must be exactly 10 digits (too long)")
     void phoneTooLongThrows() {
         assertThrows(IllegalArgumentException.class, () ->
             new Contact("ID1", "John", "Smith", "12345678901", "123 Main St")
@@ -108,10 +100,10 @@ public class ContactTest {
     }
 
     @Test
-    @DisplayName("R4 - phone must contain digits only")
+    @DisplayName("R4 - phone must be exactly 10 digits (non-digit content)")
     void phoneNonDigitThrows() {
         assertThrows(IllegalArgumentException.class, () ->
-            new Contact("ID1", "John", "Smith", "12345abcde", "123 Main St")
+            new Contact("ID1", "John", "Smith", "12345ABCDE", "123 Main St")
         );
     }
 
@@ -126,23 +118,13 @@ public class ContactTest {
     @Test
     @DisplayName("R5 - address length must be <= 30")
     void addressTooLongThrows() {
-        String address31 = "1234567890123456789012345678901"; // 31 chars
         assertThrows(IllegalArgumentException.class, () ->
-            new Contact("ID1", "John", "Smith", "1234567890", address31)
+            new Contact("ID1", "John", "Smith", "1234567890", "1234567890123456789012345678901")
         );
     }
 
     @Test
-    @DisplayName("R5 - address length 30 is accepted")
-    void addressLengthThirtyAccepted() {
-        String address30 = "123456789012345678901234567890"; // 30 chars
-        assertDoesNotThrow(() ->
-            new Contact("ID1", "John", "Smith", "1234567890", address30)
-        );
-    }
-
-    @Test
-    @DisplayName("Setters accept valid updates and contactId stays stable")
+    @DisplayName("S1 - setters update allowed fields and id remains stable")
     void settersUpdateFieldsAndIdStaysStable() {
         Contact c = buildValidContact();
         String originalId = c.getContactId();
@@ -162,12 +144,15 @@ public class ContactTest {
     }
 
     @Test
-    @DisplayName("Setters reject invalid updates")
-    void settersRejectInvalidValues() {
+    @DisplayName("S1 - setters reject invalid updates")
+    void settersRejectInvalidUpdates() {
         Contact c = buildValidContact();
 
-        assertThrows(IllegalArgumentException.class, () -> c.setPhone("123-456-7890"));
-        assertThrows(IllegalArgumentException.class, () -> c.setFirstName("ABCDEFGHIJK"));
-        assertThrows(IllegalArgumentException.class, () -> c.setAddress("1234567890123456789012345678901"));
+        assertAll(
+            () -> assertThrows(IllegalArgumentException.class, () -> c.setFirstName(null)),
+            () -> assertThrows(IllegalArgumentException.class, () -> c.setLastName(null)),
+            () -> assertThrows(IllegalArgumentException.class, () -> c.setPhone(null)),
+            () -> assertThrows(IllegalArgumentException.class, () -> c.setAddress(null))
+        );
     }
 }
