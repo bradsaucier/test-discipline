@@ -1,12 +1,10 @@
 # CS-320: Verification-First Test Discipline
 
-```
-+==================================================================================+
-|  STATUS  : ACTIVE                                                             |
-|  AUTHOR  : Bradley Saucier, SMSgt, USAF (Ret.)                                |
-|  COURSE  : SNHU CS-320 - Software Testing, Automation, and Quality Assurance  |
-|  LICENSE : MIT                                                                |
-+==================================================================================+
+```yaml
+STATUS   : ACTIVE
+AUTHOR   : Bradley Saucier, SMSgt, USAF (Ret.)
+COURSE   : SNHU CS-320 - Software Testing, Automation, and Quality Assurance
+LICENSE  : MIT
 ```
 
 > [!IMPORTANT]
