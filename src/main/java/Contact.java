@@ -3,6 +3,12 @@
 
 public final class Contact {
 
+    // Single source of truth for field constraints.
+    private static final int CONTACT_ID_MAX_LENGTH = 10;
+    private static final int NAME_MAX_LENGTH = 10;
+    private static final int PHONE_DIGITS = 10;
+    private static final int ADDRESS_MAX_LENGTH = 30;
+
     // Immutable after construction; used as lookup key.
     private final String contactId;
 
@@ -13,11 +19,11 @@ public final class Contact {
     private String address;
 
     public Contact(String contactId, String firstName, String lastName, String phone, String address) {
-        validate(contactId, "contactId", 10, false);
-        validate(firstName, "firstName", 10, false);
-        validate(lastName, "lastName", 10, false);
-        validate(phone, "phone", 10, true);
-        validate(address, "address", 30, false);
+        validate(contactId, "contactId", CONTACT_ID_MAX_LENGTH, false);
+        validate(firstName, "firstName", NAME_MAX_LENGTH, false);
+        validate(lastName, "lastName", NAME_MAX_LENGTH, false);
+        validate(phone, "phone", PHONE_DIGITS, true);
+        validate(address, "address", ADDRESS_MAX_LENGTH, false);
 
         this.contactId = contactId;
         this.firstName = firstName;
@@ -35,7 +41,7 @@ public final class Contact {
     }
 
     public void setFirstName(String firstName) {
-        validate(firstName, "firstName", 10, false);
+        validate(firstName, "firstName", NAME_MAX_LENGTH, false);
         this.firstName = firstName;
     }
 
@@ -44,7 +50,7 @@ public final class Contact {
     }
 
     public void setLastName(String lastName) {
-        validate(lastName, "lastName", 10, false);
+        validate(lastName, "lastName", NAME_MAX_LENGTH, false);
         this.lastName = lastName;
     }
 
@@ -53,7 +59,7 @@ public final class Contact {
     }
 
     public void setPhone(String phone) {
-        validate(phone, "phone", 10, true);
+        validate(phone, "phone", PHONE_DIGITS, true);
         this.phone = phone;
     }
 
@@ -62,14 +68,14 @@ public final class Contact {
     }
 
     public void setAddress(String address) {
-        validate(address, "address", 30, false);
+        validate(address, "address", ADDRESS_MAX_LENGTH, false);
         this.address = address;
     }
 
     // Validates a required String field. If strictDigits is true, value must be exactly maxLength digits.
     private static void validate(String value, String fieldName, int maxLength, boolean strictDigits) {
-        if (value == null) {
-            throw new IllegalArgumentException(fieldName + " must not be null");
+        if (value == null || value.length() == 0) {
+            throw new IllegalArgumentException(fieldName + " must not be null or empty");
         }
 
         if (strictDigits) {
