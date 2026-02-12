@@ -228,11 +228,11 @@ flowchart TD
 
 ### 4.4 Traceability matrix
 
-| Module | Requirement | Domain | Service | Tests |
-|--------|-------------|--------|---------|-------|
-| 3 - Contact | `docs/requirements/module-3-contact.md` | `Contact.java` | `ContactService.java` | `ContactTest.java`, `ContactServiceTest.java` |
-| 4 - Task | `docs/requirements/module-4-task.md` | `Task.java` | `TaskService.java` | `TaskTest.java`, `TaskServiceTest.java` |
-| 5 - Appointment | `docs/requirements/module-5-appointment.md` | `Appointment.java` | `AppointmentService.java` | `AppointmentTest.java`, `AppointmentServiceTest.java` |
+| Module | Requirement | Implementation | Tests |
+|-------:|-------------|----------------|-------|
+| M3 Contact | [module-3-contact](docs/requirements/module-3-contact.md) | Domain: [Contact](src/main/java/Contact.java)<br>Service: [ContactService](src/main/java/ContactService.java) | [ContactTest](src/test/java/ContactTest.java)<br>[ContactServiceTest](src/test/java/ContactServiceTest.java) |
+| M4 Task | [module-4-task](docs/requirements/module-4-task.md) | Domain: [Task](src/main/java/Task.java)<br>Service: [TaskService](src/main/java/TaskService.java) | [TaskTest](src/test/java/TaskTest.java)<br>[TaskServiceTest](src/test/java/TaskServiceTest.java) |
+| M5 Appt | [module-5-appointment](docs/requirements/module-5-appointment.md) | Domain: [Appointment](src/main/java/Appointment.java)<br>Service: [AppointmentService](src/main/java/AppointmentService.java) | [AppointmentTest](src/test/java/AppointmentTest.java)<br>[AppointmentServiceTest](src/test/java/AppointmentServiceTest.java) |
 
 All source files reside under `src/main/java/` and `src/test/java/`.
 
