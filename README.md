@@ -11,62 +11,50 @@ LICENSE  : MIT
 > **BOTTOM LINE UP FRONT**
 > Build in-memory services for Contact, Task, and Appointment records, then verify rubric compliance with JUnit 5 and a repeatable CI evidence trail.
 
-[![Build](https://github.com/bradsaucier/test-discipline/actions/workflows/maven-build.yml/badge.svg)](https://github.com/bradsaucier/test-discipline/actions/workflows/maven-build.yml)
-![JaCoCo Coverage](.github/badges/jacoco.svg)
-![Branches](.github/badges/branches.svg)
-
-| Java | Test Framework | Coverage Tool | Coverage Gate | Test Runner |
-|------|----------------|---------------|---------------|-------------|
-| 17 | JUnit Jupiter 6.0.2 | JaCoCo 0.8.14 | >= 0.80 instruction ratio | Surefire 3.5.4 (failIfNoTests) |
-
----
-
-### Quick verification
-
-```
-mvn -B test                # unit tests only
-mvn -B -Pci verify         # tests + coverage gate (mirrors CI)
-```
+<p align="left">
+  <img alt="Test Discipline" src="https://img.shields.io/badge/Test%20Discipline-passing-brightgreen">
+  <img alt="coverage" src=".github/badges/jacoco.svg">
+  <img alt="branches" src=".github/badges/branches.svg">
+</p>
 
 ---
 
 ## Table of contents
 
-- [1 Mission profile](#1-mission-profile)
-- [2 Critical constraints](#2-critical-constraints)
-- [3 Execution](#3-execution)
-- [4 Administration and logistics](#4-administration-and-logistics)
-- [5 Command and signal](#5-command-and-signal)
-- [6 Academic integrity](#6-academic-integrity)
-- [7 Module 8 journal reflections](#7-module-8-journal-reflections)
-- [8 Notes](#8-notes)
+1. Situation and intent
+2. Mission and constraints
+3. Execution
+4. Administration and logistics
+5. Command and signal
+6. Academic integrity
+7. Module 8 journal reflections
+8. Notes
 
 ---
 
-## 1 Mission profile
+## 1 Situation and intent
 
-This repository demonstrates verification-first discipline for SNHU CS-320 by enforcing rubric-driven requirements with JUnit tests and a CI coverage gate.
+This repository is a CS-320 portfolio artifact demonstrating test discipline:
+requirements translated into unit tests, automated verification, and an auditable
+evidence trail via CI.
 
-Mechanism of action:
-
-| Step | Action |
-|------|--------|
-| 1 | Define domain invariants (Contact, Task, Appointment); reject invalid state at construction. |
-| 2 | Implement in-memory services that enforce ID uniqueness and deterministic behavior. |
-| 3 | Prove contract compliance with JUnit tests covering success and failure paths. |
-| 4 | Enforce regression resistance in CI via `mvn -B -Pci verify` and JaCoCo coverage checks. |
+The Java services are intentionally in-memory and deterministic. The emphasis is
+on correctness under constraints, defensive input validation, and repeatable
+verification.
 
 ---
 
-## 2 Critical constraints
+## 2 Mission and constraints
 
-GO / NO-GO criteria:
+Mission: deliver unit-tested Java components and supporting portfolio evidence.
+
+Constraints:
 
 | # | Constraint |
 |---|------------|
-| 1 | Java runtime must be 17. |
-| 2 | Local execution requires Maven. |
-| 3 | CI compliance requires the `ci` Maven profile (coverage gate at verify). |
+| 1 | Only unit tests required by course scope (no database, no integration harness). |
+| 2 | Deterministic execution: tests must be repeatable and low-flake. |
+| 3 | CI must gate coverage at or above 0.80 instruction ratio (JaCoCo). |
 | 4 | Storage is in-memory only (volatile by design). No database, no network. |
 
 ---
@@ -78,11 +66,11 @@ GO / NO-GO criteria:
 | Item | Detail |
 |------|--------|
 | Workflow | `Test Discipline` - job: `mission-assurance` |
-| Triggers | push: `main`, `develop` - pull_request: `master`, `develop` - `workflow_dispatch` |
+| Triggers | push: `main`, `develop` - pull_request: `main`, `develop` - `workflow_dispatch` |
 | Paths ignored | `**/*.md`, `docs/**`, `.github/badges/**` |
 | CI command | `mvn -B -Pci verify` |
 | CI artifacts | `surefire-reports`, `jacoco-report` |
-| Badge commit | `refs/heads/master` only, on success |
+| Badge commit | `refs/heads/main` only, on success |
 | Coverage gate | `ci` profile - `jacoco:check` at verify - >= 0.80 instruction covered ratio |
 
 Project One (Module 8 portfolio artifact):
@@ -93,9 +81,27 @@ Project One (Module 8 portfolio artifact):
 | Service | `src/main/java/ContactService.java` |
 | Tests | `src/test/java/ContactTest.java`, `src/test/java/ContactServiceTest.java` |
 
-Project Two: Planned (`docs/project-two/`) - not yet present.
+Project Two (Module 8 portfolio artifact):
 
-### 3.2 Verification outputs
+| Role | File |
+|------|------|
+| Report (PDF) | `docs/project-two/Project-Two-Summary-Reflections.pdf` |
+| GitHub mirror (MD) | `docs/project-two/README.md` |
+
+### 3.2 Portfolio artifacts
+
+This section is the Module 8 grading target set. Links are provided to reduce evaluator search time.
+
+| Artifact | Purpose | Link |
+|----------|---------|------|
+| Contact.java | Project One domain model | [src/main/java/Contact.java](src/main/java/Contact.java) |
+| ContactService.java | Project One service layer | [src/main/java/ContactService.java](src/main/java/ContactService.java) |
+| ContactTest.java | Project One unit tests (domain) | [src/test/java/ContactTest.java](src/test/java/ContactTest.java) |
+| ContactServiceTest.java | Project One unit tests (service) | [src/test/java/ContactServiceTest.java](src/test/java/ContactServiceTest.java) |
+| Project Two report (PDF) | Summary and reflections | [docs/project-two/Project-Two-Summary-Reflections.pdf](docs/project-two/Project-Two-Summary-Reflections.pdf) |
+| Project Two mirror (MD) | GitHub-readable summary | [docs/project-two/README.md](docs/project-two/README.md) |
+
+### 3.3 Verification outputs
 
 After a successful `mvn -B -Pci verify`:
 
@@ -104,6 +110,13 @@ After a successful `mvn -B -Pci verify`:
 | Surefire test reports | `target/surefire-reports/` |
 | JaCoCo HTML report | `target/site/jacoco/index.html` |
 | JaCoCo CSV (badge source) | `target/site/jacoco/jacoco.csv` |
+
+Quick verification:
+
+```bash
+mvn -B test          # unit tests only
+mvn -B -Pci verify   # tests + coverage gate (mirrors CI)
+```
 
 ---
 
@@ -130,6 +143,11 @@ README.md
 docs/
   journal/
     module-5-journal.md
+  project-one/
+    project_one_brief.pdf
+  project-two/
+    Project-Two-Summary-Reflections.pdf
+    README.md
   requirements/
     README.md
     module-3-contact.md
@@ -209,6 +227,8 @@ All source files reside under `src/main/java/` and `src/test/java/`.
 | Requirements index | `docs/requirements/README.md` |
 | CI protocol | `docs/verification/ci-protocol.md` |
 | Security posture | `docs/verification/security-posture.md` |
+| Project Two report (PDF) | `docs/project-two/Project-Two-Summary-Reflections.pdf` |
+| Project Two mirror (MD) | `docs/project-two/README.md` |
 | Journal entry | `docs/journal/module-5-journal.md` |
 | Test reports (CI artifact) | workflow artifact: `surefire-reports` |
 | Coverage report (CI artifact) | workflow artifact: `jacoco-report` |
@@ -223,7 +243,7 @@ All source files reside under `src/main/java/` and `src/test/java/`.
 
 ### 5.3 Contingencies and rollback
 
-**Condition:** regression introduced (tests fail or coverage gate fails).
+Condition: regression introduced (tests fail or coverage gate fails).
 
 | Step | Action |
 |------|--------|
@@ -249,21 +269,27 @@ content from derived material.
 <details>
 <summary>1. How can I ensure that my code, program, or software is functional and secure?</summary>
 
-I treat requirements as contracts and enforce them at the boundary. Domain objects fail fast on invalid inputs, preventing invalid state from entering the system. Services enforce uniqueness and reject invalid operations (null IDs, unknown IDs, duplicates). I verify behavior with JUnit 5 tests that cover both success paths and failure paths, and I use CI to run the full test suite on every qualifying event so regressions are detected immediately.
+I ensure functionality by translating requirements into executable assertions and then proving both success paths and failure paths. Domain objects fail fast at construction, and services enforce lifecycle rules (uniqueness, update, delete) so invalid state is rejected before it can propagate.
+
+I treat security as disciplined boundary control and supply-chain hygiene. Inputs are validated at the edges, IDs remain immutable, and CI enforces repeatability by running `mvn -B -Pci verify` with a JaCoCo coverage gate. Dependencies and workflow actions are kept current through controlled updates, and workflow permissions are scoped to least privilege except where write access is required to commit badges.
 
 </details>
 
 <details>
 <summary>2. How do I interpret user needs and incorporate them into a program?</summary>
 
-I translate user needs into explicit constraints and behaviors. In this course, the rubric is the specification, so I map each requirement to one or more tests and implement only what the contract demands. This keeps scope controlled and traceability clean: a grader or reviewer can follow the chain from requirement to test name to the enforcing code.
+I interpret user needs by converting natural-language requirements into specific constraints and observable behaviors. For CS-320, the rubric and module requirement documents are the specification.
+
+I incorporate those needs through traceability: each constraint maps to named unit tests, and each test maps to the enforcing code. This creates a clean line of sight for a grader or reviewer from requirement to test to implementation, and it keeps scope controlled because only contract-driven behavior is built and verified.
 
 </details>
 
 <details>
 <summary>3. How do I approach designing software?</summary>
 
-I start with the data model and invariants, then build a service layer that operates on those models, then build tests that prove the contract. For these projects, the model layer rejects invalid state, and the service layer focuses on lifecycle operations (add, delete, update) using a Map keyed by ID for deterministic lookup. I keep the design simple, readable, and testable, with no external dependencies that would make verification non-deterministic.
+I approach design verification-first. I define invariants first (what must always be true), encode them in the domain model, and keep the service layer deterministic by using in-memory Maps keyed by ID.
+
+For this scale, I prioritize clarity over framework complexity. The result is modular code that is easy to test, easy to reason about, and auditable through repeatable CI runs and published verification artifacts.
 
 </details>
 
@@ -273,4 +299,5 @@ I start with the data model and invariants, then build a service layer that oper
 
 1. This repository contains Contact, Task, and Appointment components to document end-to-end progression across Modules 3-5.
 2. The official Project One portfolio artifact set for Module 8 is limited to the Contact files listed in the Mission dashboard.
-3. In-memory storage is intentionally volatile for this course scope. In production, this service layer would sit in front of a persistence layer.
+3. Project Two is stored under `docs/project-two/` as a PDF plus a Markdown mirror for GitHub viewing.
+4. In-memory storage is intentionally volatile for this course scope. In production, this service layer would sit in front of a persistence layer.
