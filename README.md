@@ -17,18 +17,30 @@ LICENSE  : MIT
   <img alt="branches" src=".github/badges/branches.svg">
 </p>
 
+Direct link for grading: [Module 8 journal reflections](#7-module-8-journal-reflections)
+
 ---
 
 ## Table of contents
 
-1. Situation and intent
-2. Mission and constraints
-3. Execution
-4. Administration and logistics
-5. Command and signal
-6. Academic integrity
-7. Module 8 journal reflections
-8. Notes
+- [Situation and intent](#1-situation-and-intent)
+- [Mission and constraints](#2-mission-and-constraints)
+- [Execution](#3-execution)
+  - [Mission dashboard](#31-mission-dashboard)
+  - [Portfolio artifacts](#32-portfolio-artifacts)
+  - [Verification outputs](#33-verification-outputs)
+- [Administration and logistics](#4-administration-and-logistics)
+  - [Repository layout](#41-repository-layout)
+  - [Architecture](#42-architecture)
+  - [Verification strategy](#43-verification-strategy)
+  - [Traceability matrix](#44-traceability-matrix)
+- [Command and signal](#5-command-and-signal)
+  - [Evidence locker](#51-evidence-locker)
+  - [Restrictions and threats](#52-restrictions-and-threats)
+  - [Contingencies and rollback](#53-contingencies-and-rollback)
+- [Academic integrity](#6-academic-integrity)
+- [Module 8 journal reflections](#7-module-8-journal-reflections)
+- [Notes](#8-notes)
 
 ---
 
