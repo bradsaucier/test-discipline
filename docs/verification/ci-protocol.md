@@ -17,5 +17,5 @@ What CI uploads as artifacts
 Badge behavior
 
 1. Badges generate only when target/site/jacoco/jacoco.csv exists.
-2. Badges commit only on successful runs on master and never on pull_request events.
+2. Badges commit only on successful runs on main and never on pull_request events.
 3. Badge commit message includes [skip ci] and the workflow ignores .github/badges to prevent loops.
