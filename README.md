@@ -1,15 +1,20 @@
 # CS-320: Verification-First Test Discipline
 
 ```yaml
-STATUS   : ACTIVE
-AUTHOR   : Bradley Saucier, SMSgt, USAF (Ret.)
-COURSE   : SNHU CS-320 - Software Testing, Automation, and Quality Assurance
-LICENSE  : MIT
+STATUS  : ACTIVE
+AUTHOR  : Bradley Saucier, SMSgt, USAF (Ret.)
+COURSE  : SNHU CS-320 - Software Testing, Automation, and Quality Assurance
+LICENSE : MIT
 ```
 
 > [!IMPORTANT]
 > **BOTTOM LINE UP FRONT**
-> Build in-memory services for Contact, Task, and Appointment records, then verify rubric compliance with JUnit 5 and a repeatable CI evidence trail.
+> Build deterministic, in-memory services for Contact, Task, and Appointment records, then prove correctness with JUnit Jupiter and an auditable CI evidence trail.
+>
+> Mission success criteria:
+> 1. All unit tests pass.
+> 2. Coverage gate holds (JaCoCo instruction ratio >= 0.80).
+> 3. Evidence artifacts are produced and reviewable (reports + badges).
 
 <p align="left">
   <img alt="Test Discipline" src="https://img.shields.io/badge/Test%20Discipline-passing-brightgreen">
@@ -46,13 +51,9 @@ Direct link for grading: [Module 8 journal reflections](#7-module-8-journal-refl
 
 ## 1 Situation and intent
 
-This repository is a CS-320 portfolio artifact demonstrating test discipline:
-requirements translated into unit tests, automated verification, and an auditable
-evidence trail via CI.
+This repository is a CS-320 portfolio artifact demonstrating test discipline: requirements translated into unit tests, automated verification, and an auditable CI evidence trail.
 
-The Java services are intentionally in-memory and deterministic. The emphasis is
-on correctness under constraints, defensive input validation, and repeatable
-verification.
+Services are intentionally in-memory and deterministic. The objective is correctness under constraints, defensive input validation, and repeatable verification.
 
 ---
 
@@ -62,12 +63,12 @@ Mission: deliver unit-tested Java components and supporting portfolio evidence.
 
 Constraints:
 
-| # | Constraint |
-|---|------------|
-| 1 | Only unit tests required by course scope (no database, no integration harness). |
-| 2 | Deterministic execution: tests must be repeatable and low-flake. |
-| 3 | CI must gate coverage at or above 0.80 instruction ratio (JaCoCo). |
-| 4 | Storage is in-memory only (volatile by design). No database, no network. |
+| ID | Constraint | Intent |
+|---:|------------|--------|
+| C1 | Unit test scope only | No database, no integration harness, no network dependencies. |
+| C2 | Deterministic execution | Repeatable runs, low flake risk, predictable inputs and outputs. |
+| C3 | Coverage gate in CI | Fail the build if JaCoCo instruction coverage drops below 0.80. |
+| C4 | Volatile storage by design | In-memory only. Restart equals data loss. This is a constraint, not a defect. |
 
 ---
 
@@ -78,27 +79,22 @@ Constraints:
 | Item | Detail |
 |------|--------|
 | Workflow | `Test Discipline` - job: `mission-assurance` |
-| Triggers | push: `main`, `develop` - pull_request: `main`, `develop` - `workflow_dispatch` |
+| Triggers | push: `main`, `develop` - pull_request: `main`, `develop` |
 | Paths ignored | `**/*.md`, `docs/**`, `.github/badges/**` |
 | CI command | `mvn -B -Pci verify` |
 | CI artifacts | `surefire-reports`, `jacoco-report` |
 | Badge commit | `refs/heads/main` only, on success |
-| Coverage gate | `ci` profile - `jacoco:check` at verify - >= 0.80 instruction covered ratio |
+| Coverage gate | `ci` profile - `jacoco:check` at verify - instruction ratio >= 0.80 |
 
-Project One (Module 8 portfolio artifact):
+Module 8 portfolio artifact sets:
 
-| Role | File |
-|------|------|
-| Domain | `src/main/java/Contact.java` |
-| Service | `src/main/java/ContactService.java` |
-| Tests | `src/test/java/ContactTest.java`, `src/test/java/ContactServiceTest.java` |
-
-Project Two (Module 8 portfolio artifact):
-
-| Role | File |
-|------|------|
-| Report (PDF) | `docs/project-two/Project-Two-Summary-Reflections.pdf` |
-| GitHub mirror (MD) | `docs/project-two/README.md` |
+| Artifact set | Role | File |
+|-------------|------|------|
+| Project One | Domain | `src/main/java/Contact.java` |
+| Project One | Service | `src/main/java/ContactService.java` |
+| Project One | Tests | `src/test/java/ContactTest.java`, `src/test/java/ContactServiceTest.java` |
+| Project Two | Report (PDF) | `docs/project-two/Project-Two-Summary-Reflections.pdf` |
+| Project Two | GitHub mirror (MD) | `docs/project-two/README.md` |
 
 ### 3.2 Portfolio artifacts
 
@@ -112,6 +108,8 @@ This section is the Module 8 grading target set. Links are provided to reduce ev
 | ContactServiceTest.java | Project One unit tests (service) | [src/test/java/ContactServiceTest.java](src/test/java/ContactServiceTest.java) |
 | Project Two report (PDF) | Summary and reflections | [docs/project-two/Project-Two-Summary-Reflections.pdf](docs/project-two/Project-Two-Summary-Reflections.pdf) |
 | Project Two mirror (MD) | GitHub-readable summary | [docs/project-two/README.md](docs/project-two/README.md) |
+
+Full component-to-file mapping across Modules 3-5: [Traceability matrix](#44-traceability-matrix).
 
 ### 3.3 Verification outputs
 
@@ -139,6 +137,7 @@ mvn -B -Pci verify   # tests + coverage gate (mirrors CI)
 ```text
 .editorconfig
 .gitattributes
+.gitignore
 .github/
   badges/
     .gitkeep
@@ -196,23 +195,36 @@ src/
 
 Design choices:
 
-| # | Decision |
-|---|----------|
-| 1 | Services use an in-memory Map keyed by ID for deterministic lookup and enforced uniqueness. |
-| 2 | IDs are immutable (`final`) with no setter. |
-| 3 | Appointment uses defensive copying of `java.util.Date` to prevent external mutation. |
+| ID | Decision |
+|---:|----------|
+| D1 | Services use in-memory Maps keyed by ID for deterministic lookup and enforced uniqueness. |
+| D2 | IDs are immutable (`final`) with no setter. |
+| D3 | Appointment uses defensive copying of `java.util.Date` to prevent external mutation. |
 
 ### 4.3 Verification strategy
 
 Rubric-derived test intent:
 
-| # | Intent |
-|---|--------|
-| 1 | Boundary value coverage for constrained fields (max-valid, over-max). |
-| 2 | Required field enforcement (null, empty). |
-| 3 | Phone validation enforces exactly 10 digits (too-short, too-long, non-digit). |
-| 4 | Appointment date validation rejects past dates using time offsets to reduce flake risk. |
-| 5 | Service test isolation via `@BeforeEach` to prevent state bleed. |
+| ID | Intent |
+|---:|--------|
+| V1 | Boundary value coverage for constrained fields (max-valid, over-max). |
+| V2 | Required field enforcement (null, empty). |
+| V3 | Phone validation enforces exactly 10 digits (too-short, too-long, non-digit). |
+| V4 | Appointment date validation rejects past dates using time offsets to reduce flake risk. |
+| V5 | Service test isolation via `@BeforeEach` to prevent state bleed. |
+
+Verification pipeline (evidence chain):
+
+```mermaid
+%%{init: {'theme': 'neutral'}}%%
+flowchart TD
+  A[Source: domain + service] --> B["Command: mvn -B -Pci verify"]
+  B --> C[Unit tests: JUnit Jupiter]
+  C --> D["Coverage gate: JaCoCo instruction ratio >= 0.80"]
+  C --> E[Surefire reports]
+  D --> F[JaCoCo HTML report]
+  F --> G[Badges committed on main]
+```
 
 ### 4.4 Traceability matrix
 
@@ -230,6 +242,9 @@ All source files reside under `src/main/java/` and `src/test/java/`.
 
 ### 5.1 Evidence locker
 
+<details>
+<summary>All verification artifacts and their locations</summary>
+
 | Evidence | Location |
 |----------|----------|
 | Build workflow | `.github/workflows/maven-build.yml` |
@@ -245,12 +260,14 @@ All source files reside under `src/main/java/` and `src/test/java/`.
 | Test reports (CI artifact) | workflow artifact: `surefire-reports` |
 | Coverage report (CI artifact) | workflow artifact: `jacoco-report` |
 
+</details>
+
 ### 5.2 Restrictions and threats
 
 > [!WARNING]
 > **FAILURE MODES**
-> 1. Running without Java 17 may fail compilation or tests.
-> 2. Skipping the ci profile bypasses the coverage gate used in CI.
+> 1. Running without Java 17 can fail compilation or tests.
+> 2. Skipping the `ci` profile bypasses the coverage gate used in CI.
 > 3. In-memory storage is volatile. Restart equals data loss by design.
 
 ### 5.3 Contingencies and rollback
@@ -268,11 +285,9 @@ Condition: regression introduced (tests fail or coverage gate fails).
 
 ## 6 Academic integrity
 
-This repository contains coursework artifacts produced for SNHU CS-320 and
-repackaged for portfolio review. All work is my own.
+This repository contains coursework artifacts produced for SNHU CS-320 and repackaged for portfolio review. All work is my own.
 
-If any portion is reused, cite the repository and distinguish original
-content from derived material.
+If any portion is reused, cite the repository and distinguish original content from derived material.
 
 ---
 
@@ -309,7 +324,7 @@ For this scale, I prioritize clarity over framework complexity. The result is mo
 
 ## 8 Notes
 
-1. This repository contains Contact, Task, and Appointment components to document end-to-end progression across Modules 3-5.
+1. This repository contains Contact, Task, and Appointment components to document end-to-end progression across Modules 3 to 5.
 2. The official Project One portfolio artifact set for Module 8 is limited to the Contact files listed in the Mission dashboard.
 3. Project Two is stored under `docs/project-two/` as a PDF plus a Markdown mirror for GitHub viewing.
 4. In-memory storage is intentionally volatile for this course scope. In production, this service layer would sit in front of a persistence layer.
