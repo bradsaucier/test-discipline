@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+message: "If you use this repository, please cite it as below."
+type: software
+title: "CS-320: Verification-First Test Discipline"
+abstract: "Verification-first CS-320 portfolio repository implementing deterministic in-memory Contact, Task, and Appointment services with unit tests, CI coverage gating, and traceability artifacts."
+authors:
+  - family-names: "Saucier"
+    given-names: "Bradley"
+license: "MIT"
+repository-code: "https://github.com/<USER>/<REPO>"
+keywords:
+  - "software testing"
+  - "quality assurance"
+  - "unit testing"
+  - "JUnit Jupiter"
+  - "JaCoCo"
+  - "Maven"
+  - "CI/CD"
+  - "GitHub Actions"
+  - "traceability"
+  - "verification-first"
+  - "Java"
+  - "SNHU"
+  - "CS-320"
+version: "0.1.0"
+date-released: "2026-02-12"
