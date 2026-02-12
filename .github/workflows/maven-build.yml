@@ -1,7 +1,6 @@
 name: Test Discipline
 
 on:
-  workflow_dispatch:
   push:
     branches: ["main", "develop"]
     paths-ignore:
@@ -9,74 +8,67 @@ on:
       - "docs/**"
       - ".github/badges/**"
   pull_request:
-    branches: ["master", "develop"]
+    branches: ["main", "develop"]
 
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   mission-assurance:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-    permissions:
-      contents: write
-
     steps:
       - name: Checkout
         uses: actions/checkout@v6
 
-      - name: Set up JDK 17
-        uses: actions/setup-java@v5.2.0
+      - name: Set up Java
+        uses: actions/setup-java@v4
         with:
           distribution: temurin
           java-version: "17"
           cache: maven
 
-      - name: Build and verify (ci profile)
+      - name: Maven verify (CI profile)
         run: mvn -B -Pci verify
 
-      - name: Upload unit test reports
+      - name: Upload Surefire reports
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: surefire-reports
           path: target/surefire-reports
-          if-no-files-found: ignore
 
-      - name: Upload coverage report
+      - name: Upload JaCoCo report
         if: always()
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v4
         with:
           name: jacoco-report
           path: target/site/jacoco
-          if-no-files-found: ignore
 
-      - name: Detect JaCoCo CSV
+      - name: Locate JaCoCo CSV
         id: jacoco_csv
-        if: always()
-        shell: bash
         run: |
-          if [ -f target/site/jacoco/jacoco.csv ]; then
-            echo "found=true" >> "$GITHUB_OUTPUT"
+          if [ -f "target/site/jacoco/jacoco.csv" ]; then
+            echo "found=true" >> $GITHUB_OUTPUT
           else
-            echo "found=false" >> "$GITHUB_OUTPUT"
+            echo "found=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Generate JaCoCo badges
+      - name: Generate coverage badges
         if: steps.jacoco_csv.outputs.found == 'true'
         uses: cicirello/jacoco-badge-generator@v2
         with:
           jacoco-csv-file: target/site/jacoco/jacoco.csv
           badges-directory: .github/badges
           generate-branches-badge: true
+          generate-coverage-badge: true
           generate-summary: true
 
       - name: Commit badge updates
-        if: success() && github.ref == 'refs/heads/master' && github.event_name != 'pull_request' && steps.jacoco_csv.outputs.found == 'true'
+        if: success() && github.ref == 'refs/heads/main' && github.event_name != 'pull_request' && steps.jacoco_csv.outputs.found == 'true'
         uses: EndBug/add-and-commit@v9
         with:
           default_author: github_actions
