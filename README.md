@@ -16,19 +16,17 @@ LICENSE : MIT
 > 2. Coverage gate holds (JaCoCo instruction ratio >= 0.80).
 > 3. Evidence artifacts are produced and reviewable (reports + badges).
 
-<p align="left">
-  <a href="https://github.com/bradsaucier/test-discipline/actions/workflows/maven-build.yml"><img alt="Test Discipline (CI)" src="https://github.com/bradsaucier/test-discipline/actions/workflows/maven-build.yml/badge.svg?branch=main"></a>
-  <img alt="coverage" src=".github/badges/jacoco.svg">
-  <img alt="branches" src=".github/badges/branches.svg">
-</p>
-
-
 > [!TIP]
 > **GRADER FAST PATH**
 > 1. Read: [Module 8 journal reflections](#7-module-8-journal-reflections)
 > 2. Review: [Portfolio artifacts](#32-portfolio-artifacts)
 > 3. Verify: `mvn -B -Pci verify` (tests + coverage gate)
 
+<p align="left">
+  <a href="https://github.com/bradsaucier/test-discipline/actions/workflows/maven-build.yml"><img alt="Test Discipline (CI)" src="https://github.com/bradsaucier/test-discipline/actions/workflows/maven-build.yml/badge.svg?branch=main"></a>
+  <img alt="coverage" src=".github/badges/jacoco.svg">
+  <img alt="branches" src=".github/badges/branches.svg">
+</p>
 
 ---
 
