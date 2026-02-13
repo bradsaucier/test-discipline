@@ -313,8 +313,8 @@ This repository contains coursework artifacts produced for SNHU CS-320 and repac
 
 If any portion is reused, cite the repository and distinguish original content from derived material.
 
+Citation: [CITATION.cff](CITATION.cff) provides machine-readable metadata for GitHub "Cite this repository".
 
-Citation: `CITATION.cff` provides machine-readable metadata for GitHub "Cite this repository".
 ---
 
 ## 7 Module 8 journal reflections
