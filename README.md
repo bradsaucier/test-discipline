@@ -17,12 +17,18 @@ LICENSE : MIT
 > 3. Evidence artifacts are produced and reviewable (reports + badges).
 
 <p align="left">
-  <img alt="Test Discipline" src="https://img.shields.io/badge/Test%20Discipline-passing-brightgreen">
+  <a href="https://github.com/bradsaucier/test-discipline/actions/workflows/maven-build.yml"><img alt="Test Discipline (CI)" src="https://github.com/bradsaucier/test-discipline/actions/workflows/maven-build.yml/badge.svg?branch=main"></a>
   <img alt="coverage" src=".github/badges/jacoco.svg">
   <img alt="branches" src=".github/badges/branches.svg">
 </p>
 
-Direct link for grading: [Module 8 journal reflections](#7-module-8-journal-reflections)
+
+> [!TIP]
+> **GRADER FAST PATH**
+> 1. Read: [Module 8 journal reflections](#7-module-8-journal-reflections)
+> 2. Review: [Portfolio artifacts](#32-portfolio-artifacts)
+> 3. Verify: `mvn -B -Pci verify` (tests + coverage gate)
+
 
 ---
 
@@ -65,6 +71,7 @@ Constraints:
 
 | ID | Constraint | Intent |
 |---:|------------|--------|
+| C0 | Java 17 toolchain | Build and tests target Java 17. The `release` flag prevents accidental API drift. |
 | C1 | Unit test scope only | No database, no integration harness, no network dependencies. |
 | C2 | Deterministic execution | Repeatable runs, low flake risk, predictable inputs and outputs. |
 | C3 | Coverage gate in CI | Fail the build if JaCoCo instruction coverage drops below 0.80. |
@@ -80,11 +87,14 @@ Constraints:
 |------|--------|
 | Workflow | `Test Discipline` - job: `mission-assurance` |
 | Triggers | push: `main`, `develop` - pull_request: `main`, `develop` |
-| Paths ignored | `**/*.md`, `docs/**`, `.github/badges/**` |
+| Paths ignored (push) | `**/*.md`, `docs/**`, `.github/badges/**` (pull_request still runs) |
 | CI command | `mvn -B -Pci verify` |
 | CI artifacts | `surefire-reports`, `jacoco-report` |
 | Badge commit | `refs/heads/main` only, on success |
 | Coverage gate | `ci` profile - `jacoco:check` at verify - instruction ratio >= 0.80 |
+
+Note: `paths-ignore` is configured on push events to prevent badge feedback loops. Pull requests still run verification for visibility.
+
 
 Module 8 portfolio artifact sets:
 
@@ -108,10 +118,15 @@ This section is the Module 8 grading target set. Links are provided to reduce ev
 | ContactServiceTest.java | Project One unit tests (service) | [src/test/java/ContactServiceTest.java](src/test/java/ContactServiceTest.java) |
 | Project Two report (PDF) | Summary and reflections | [docs/project-two/Project-Two-Summary-Reflections.pdf](docs/project-two/Project-Two-Summary-Reflections.pdf) |
 | Project Two mirror (MD) | GitHub-readable summary | [docs/project-two/README.md](docs/project-two/README.md) |
+| Project One brief (PDF) | Project One assignment brief (reference) | [docs/project-one/project_one_brief.pdf](docs/project-one/project_one_brief.pdf) |
 
 Full component-to-file mapping across Modules 3-5: [Traceability matrix](#44-traceability-matrix).
 
 ### 3.3 Verification outputs
+
+> [!NOTE]
+> Paths under `target/` are generated locally. In CI, the workflow publishes `surefire-reports` and `jacoco-report` as run artifacts.
+
 
 After a successful `mvn -B -Pci verify`:
 
@@ -134,6 +149,9 @@ mvn -B -Pci verify   # tests + coverage gate (mirrors CI)
 
 ### 4.1 Repository layout
 
+<details>
+<summary>Repository tree (reference)</summary>
+
 ```text
 .editorconfig
 .gitattributes
@@ -149,6 +167,7 @@ mvn -B -Pci verify   # tests + coverage gate (mirrors CI)
   workflows/
     maven-build.yml
 CONTRIBUTING.md
+CITATION.cff
 LICENSE
 README.md
 docs/
@@ -182,8 +201,9 @@ src/
     ContactServiceTest.java
     ContactTest.java
     TaskServiceTest.java
-    TaskTest.java
-```
+    TaskTest.java```
+
+</details>
 
 ### 4.2 Architecture
 
@@ -228,11 +248,13 @@ flowchart TD
 
 ### 4.4 Traceability matrix
 
+
 | Module | Requirement | Implementation | Tests |
 |-------:|-------------|----------------|-------|
-| M3 Contact | [module-3-contact](docs/requirements/module-3-contact.md) | Domain: [Contact](src/main/java/Contact.java)<br>Service: [ContactService](src/main/java/ContactService.java) | [ContactTest](src/test/java/ContactTest.java)<br>[ContactServiceTest](src/test/java/ContactServiceTest.java) |
-| M4 Task | [module-4-task](docs/requirements/module-4-task.md) | Domain: [Task](src/main/java/Task.java)<br>Service: [TaskService](src/main/java/TaskService.java) | [TaskTest](src/test/java/TaskTest.java)<br>[TaskServiceTest](src/test/java/TaskServiceTest.java) |
-| M5 Appt | [module-5-appointment](docs/requirements/module-5-appointment.md) | Domain: [Appointment](src/main/java/Appointment.java)<br>Service: [AppointmentService](src/main/java/AppointmentService.java) | [AppointmentTest](src/test/java/AppointmentTest.java)<br>[AppointmentServiceTest](src/test/java/AppointmentServiceTest.java) |
+| M3 Contact | [module-3-contact](docs/requirements/module-3-contact.md) | [Contact](src/main/java/Contact.java), [ContactService](src/main/java/ContactService.java) | [ContactTest](src/test/java/ContactTest.java), [ContactServiceTest](src/test/java/ContactServiceTest.java) |
+| M4 Task | [module-4-task](docs/requirements/module-4-task.md) | [Task](src/main/java/Task.java), [TaskService](src/main/java/TaskService.java) | [TaskTest](src/test/java/TaskTest.java), [TaskServiceTest](src/test/java/TaskServiceTest.java) |
+| M5 Appt | [module-5-appointment](docs/requirements/module-5-appointment.md) | [Appointment](src/main/java/Appointment.java), [AppointmentService](src/main/java/AppointmentService.java) | [AppointmentTest](src/test/java/AppointmentTest.java), [AppointmentServiceTest](src/test/java/AppointmentServiceTest.java) |
+
 
 All source files reside under `src/main/java/` and `src/test/java/`.
 
@@ -247,6 +269,7 @@ All source files reside under `src/main/java/` and `src/test/java/`.
 
 | Evidence | Location |
 |----------|----------|
+| Citation metadata | `CITATION.cff` |
 | Build workflow | `.github/workflows/maven-build.yml` |
 | JaCoCo instruction badge | `.github/badges/jacoco.svg` |
 | Branch coverage badge | `.github/badges/branches.svg` |
@@ -289,6 +312,8 @@ This repository contains coursework artifacts produced for SNHU CS-320 and repac
 
 If any portion is reused, cite the repository and distinguish original content from derived material.
 
+
+Citation: `CITATION.cff` provides machine-readable metadata for GitHub "Cite this repository".
 ---
 
 ## 7 Module 8 journal reflections
