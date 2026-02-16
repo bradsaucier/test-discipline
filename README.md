@@ -72,7 +72,7 @@ Constraints:
 | C0 | Java 17 toolchain | Build and tests target Java 17. The `release` flag prevents accidental API drift. |
 | C1 | Unit test scope only | No database, no integration harness, no network dependencies. |
 | C2 | Deterministic execution | Repeatable runs, low flake risk, predictable inputs and outputs. |
-| C3 | Coverage gate in CI | Fail the build if JaCoCo instruction coverage drops below 0.80. |
+| C3 | Coverage gate in CI | Fail the build if JaCoCo instruction ratio drops below 0.80. |
 | C4 | Volatile storage by design | In-memory only. Restart equals data loss. This is a constraint, not a defect. |
 
 ---
@@ -82,7 +82,7 @@ Constraints:
 ### 3.1 Mission dashboard
 
 | Item | Detail |
-|------|--------|
+|---:|:---|
 | Workflow | `Test Discipline` - job: `mission-assurance` |
 | Triggers | push: `main`, `develop` - pull_request: `main`, `develop` |
 | Paths ignored (push) | `**/*.md`, `docs/**`, `.github/badges/**` (pull_request still runs) |
@@ -91,7 +91,7 @@ Constraints:
 | Badge commit | `refs/heads/main` only, on success |
 | Coverage gate | `ci` profile - `jacoco:check` at verify - instruction ratio >= 0.80 |
 
-Note: `paths-ignore` is configured on push events to prevent badge feedback loops. Pull requests still run verification for visibility.
+Note: `paths-ignore` (for example, `docs/` and `.github/badges/`) is configured on push events to prevent badge feedback loops. Pull requests still run verification for visibility.
 
 
 Module 8 portfolio artifact sets:
@@ -106,7 +106,7 @@ Module 8 portfolio artifact sets:
 
 ### 3.2 Portfolio artifacts
 
-This section is the Module 8 grading target set. Links are provided to reduce evaluator search time.
+This section is the Module 8 grading target set. Links are relative to the repository root to reduce evaluator search time.
 
 | Artifact | Purpose | Link |
 |----------|---------|------|
@@ -130,14 +130,14 @@ After a successful `mvn -B -Pci verify`:
 
 | Artifact | Location |
 |----------|----------|
-| Surefire test reports | `target/surefire-reports/` |
+| `surefire-reports` (Surefire test reports) | `target/surefire-reports/` |
 | JaCoCo HTML report | `target/site/jacoco/index.html` |
 | JaCoCo CSV (badge source) | `target/site/jacoco/jacoco.csv` |
 
 Quick verification:
 
 ```bash
-mvn -B test          # unit tests only
+mvn -B test          # local unit tests (no coverage gate)
 mvn -B -Pci verify   # tests + coverage gate (mirrors CI)
 ```
 
@@ -235,7 +235,6 @@ Rubric-derived test intent:
 Verification pipeline (evidence chain):
 
 ```mermaid
-%%{init: {'theme': 'neutral'}}%%
 flowchart TD
   A[Source: domain + service] --> B["Command: mvn -B -Pci verify"]
   B --> C[Unit tests: JUnit Jupiter]
@@ -252,7 +251,7 @@ flowchart TD
 |-------:|-------------|----------------|-------|
 | M3 Contact | [module-3-contact](docs/requirements/module-3-contact.md) | [Contact](src/main/java/Contact.java), [ContactService](src/main/java/ContactService.java) | [ContactTest](src/test/java/ContactTest.java), [ContactServiceTest](src/test/java/ContactServiceTest.java) |
 | M4 Task | [module-4-task](docs/requirements/module-4-task.md) | [Task](src/main/java/Task.java), [TaskService](src/main/java/TaskService.java) | [TaskTest](src/test/java/TaskTest.java), [TaskServiceTest](src/test/java/TaskServiceTest.java) |
-| M5 Appt | [module-5-appointment](docs/requirements/module-5-appointment.md) | [Appointment](src/main/java/Appointment.java), [AppointmentService](src/main/java/AppointmentService.java) | [AppointmentTest](src/test/java/AppointmentTest.java), [AppointmentServiceTest](src/test/java/AppointmentServiceTest.java) |
+| M5 Appointment | [module-5-appointment](docs/requirements/module-5-appointment.md) | [Appointment](src/main/java/Appointment.java), [AppointmentService](src/main/java/AppointmentService.java) | [AppointmentTest](src/test/java/AppointmentTest.java), [AppointmentServiceTest](src/test/java/AppointmentServiceTest.java) |
 
 
 All source files reside under `src/main/java/` and `src/test/java/`.
@@ -326,6 +325,7 @@ I treat security as disciplined boundary control and supply-chain hygiene. Input
 
 </details>
 
+
 <details>
 <summary>2. How do I interpret user needs and incorporate them into a program?</summary>
 
@@ -334,6 +334,7 @@ I interpret user needs by converting natural-language requirements into specific
 I incorporate those needs through traceability: each constraint maps to named unit tests, and each test maps to the enforcing code. This creates a clean line of sight for a grader or reviewer from requirement to test to implementation, and it keeps scope controlled because only contract-driven behavior is built and verified.
 
 </details>
+
 
 <details>
 <summary>3. How do I approach designing software?</summary>
@@ -349,6 +350,6 @@ For this scale, I prioritize clarity over framework complexity. The result is mo
 ## 8 Notes
 
 1. This repository contains Contact, Task, and Appointment components to document end-to-end progression across Modules 3 to 5.
-2. The official Project One portfolio artifact set for Module 8 is limited to the Contact files listed in the Mission dashboard.
+2. The official Project One portfolio artifact set for Module 8 is limited to the Contact components listed in the Mission dashboard.
 3. Project Two is stored under `docs/project-two/` as a PDF plus a Markdown mirror for GitHub viewing.
 4. In-memory storage is intentionally volatile for this course scope. In production, this service layer would sit in front of a persistence layer.
