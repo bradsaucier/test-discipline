@@ -13,7 +13,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
-    <junit.jupiter.version>6.0.2</junit.jupiter.version>
+    <junit.jupiter.version>6.0.3</junit.jupiter.version>
     <jacoco.version>0.8.14</jacoco.version>
     <jacoco.minimum.instruction.coveredratio>0.80</jacoco.minimum.instruction.coveredratio>
   </properties>
